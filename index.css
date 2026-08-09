@@ -668,6 +668,37 @@ h1, h2, h3, h4, h5, h6 {
     gap: 16px;
 }
 
+.dash-stat-card .card-icon-box {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-light-mint);
+    border-radius: 50%;
+    margin-right: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.prog-icon-img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+    transition: transform 0.2s ease;
+}
+
+.programme-card:hover .prog-icon-img {
+    transform: scale(1.15);
+}
+
+.dash-stat-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
 .dash-stat-card .card-icon {
     font-size: 2.2rem;
     display: flex;

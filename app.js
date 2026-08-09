@@ -731,8 +731,18 @@ class AppController {
 
         container.innerHTML = "";
 
+        const progIcons = {
+            "admin": "icons/icon_programme_admin.png",
+            "horticulture": "icons/icon_programme_horticulture.png",
+            "legumes": "icons/icon_programme_legumes.png",
+            "rootcrops": "icons/icon_programme_rootcrops.png",
+            "cereals": "icons/icon_programme_cereals.png",
+            "workshop": "icons/icon_programme_workshop.png"
+        };
+
         state.programmes.forEach(p => {
             const stats = state.getProgrammeStats(p.id);
+            const iconPath = progIcons[p.id] || "icons/icon_programme_admin.png";
 
             const card = document.createElement("div");
             card.className = "programme-card";
@@ -740,8 +750,13 @@ class AppController {
             card.setAttribute("data-programme-id", p.id);
             card.innerHTML = `
                 <div class="card-header">
-                    <h3>${p.name}</h3>
-                    <span class="total-badge">${stats.total} Motors</span>
+                    <div class="card-icon-box">
+                        <img src="${iconPath}" alt="${p.name}" class="prog-icon-img" />
+                    </div>
+                    <div>
+                        <h3>${p.name}</h3>
+                        <span class="total-badge">${stats.total} Motors</span>
+                    </div>
                 </div>
                 <div class="card-stats-grid">
                     <div class="stat-box serviced">
