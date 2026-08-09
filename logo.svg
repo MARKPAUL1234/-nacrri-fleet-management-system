@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+  <defs>
+    <clipPath id="circleClip">
+      <circle cx="250" cy="250" r="238" />
+    </clipPath>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Outer Green Circular Frame -->
+  <circle cx="250" cy="250" r="240" fill="#ffffff" stroke="#00c853" stroke-width="14" />
+
+  <g clip-path="url(#circleClip)">
+    <!-- White Upper Section Background -->
+    <rect x="0" y="0" width="500" height="300" fill="#ffffff" />
+    
+    <!-- Sky-Blue Water Lower Section -->
+    <path d="M 0 300 Q 250 270 500 300 L 500 500 L 0 500 Z" fill="#50e4ff" />
+
+    <!-- Double Braided Horizontal Divider Line -->
+    <path d="M 10 300 Q 75 285 135 300 T 255 300 T 375 300 T 490 300" stroke="#000000" stroke-width="3.5" fill="none" />
+    <path d="M 10 300 Q 75 315 135 300 T 255 300 T 375 300 T 490 300" stroke="#000000" stroke-width="3.5" fill="none" />
+    <line x1="10" y1="290" x2="490" y2="290" stroke="#000000" stroke-width="2.5" />
+
+    <!-- Green Curved Vine / S-Line Divider -->
+    <path d="M 270 20 C 180 130 300 240 90 380 C 30 420 90 485 250 492 C 390 500 485 415 460 325 C 440 240 280 240 270 20 Z" fill="none" stroke="#00c853" stroke-width="8" stroke-linecap="round" />
+    
+    <!-- Sun (Top Left) -->
+    <g transform="translate(165, 85)" filter="url(#subtleShadow)">
+      <circle cx="0" cy="0" r="32" fill="#ffd600" stroke="#ffab00" stroke-width="2" />
+      <!-- Radial Rays -->
+      <line x1="0" y1="-52" x2="0" y2="-39" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="0" y1="39" x2="0" y2="52" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="-52" y1="0" x2="-39" y2="0" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="39" y1="0" x2="52" y2="0" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="-37" y1="-37" x2="-27" y2="-27" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="27" y1="27" x2="37" y2="37" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="-37" y1="37" x2="-27" y2="27" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+      <line x1="27" y1="-27" x2="37" y2="-37" stroke="#ffd600" stroke-width="4.5" stroke-linecap="round" />
+    </g>
+
+    <!-- Green Leafy Branch (Top Right Curve) -->
+    <g fill="#00c853" stroke="#009624" stroke-width="1.5" filter="url(#subtleShadow)">
+      <!-- Leaf Stem -->
+      <path d="M 235 35 Q 345 45 355 220" fill="none" stroke="#00c853" stroke-width="7" />
+      <!-- Leaves -->
+      <path d="M 265 25 C 245 5 275 0 290 15 C 295 30 275 35 265 25 Z" />
+      <path d="M 285 50 C 315 35 335 45 320 65 C 305 80 285 65 285 50 Z" />
+      <path d="M 315 85 C 345 70 365 85 350 105 C 335 120 315 105 315 85 Z" />
+      <path d="M 335 130 C 370 120 385 140 365 160 C 345 175 330 150 335 130 Z" />
+      <path d="M 350 175 C 380 165 395 190 375 205 C 355 215 340 190 350 175 Z" />
+    </g>
+
+    <!-- Zebu Cattle (Left Side) -->
+    <g transform="translate(55, 135)" filter="url(#subtleShadow)">
+      <!-- Green Grass Base -->
+      <ellipse cx="110" cy="138" rx="95" ry="12" fill="#00c853" />
+      <path d="M 25 138 L 30 125 L 35 138 L 40 122 L 45 138 M 95 138 L 100 120 L 105 138 M 165 138 L 170 122 L 175 138" stroke="#009624" stroke-width="3" fill="none" />
+      
+      <!-- Cow Legs -->
+      <path d="M 42 135 L 47 90 L 52 85 L 57 135 M 72 135 L 75 95 L 82 95 L 85 135 M 147 135 L 152 95 L 160 95 L 164 135 M 172 135 L 175 92 L 182 92 L 184 135" stroke="#795548" stroke-width="8.5" stroke-linecap="round" />
+      <!-- Torso & Hump -->
+      <path d="M 37 90 Q 62 80 92 85 Q 117 48 137 58 Q 157 52 187 72 Q 197 88 187 105 Q 122 115 37 95 Z" fill="#b06d3b" stroke="#4e342e" stroke-width="3" />
+      <!-- Neck & Head -->
+      <path d="M 177 78 Q 202 62 212 48 Q 222 53 217 68 Q 207 83 187 93 Z" fill="#b06d3b" stroke="#4e342e" stroke-width="2.5" />
+      <!-- Horns -->
+      <path d="M 207 48 C 212 18 187 2 172 18 C 187 23 197 33 202 46 Z" fill="#795548" stroke="#3e2723" stroke-width="2.5" />
+      <path d="M 212 46 C 227 12 207 -3 192 9 C 202 18 210 28 210 43 Z" fill="#795548" stroke="#3e2723" stroke-width="2.5" />
+      <!-- Tail -->
+      <path d="M 38 90 Q 26 110 31 128" stroke="#3e2723" stroke-width="3.5" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- Microscope (Right Side) -->
+    <g transform="translate(325, 195)" filter="url(#subtleShadow)">
+      <!-- Base -->
+      <rect x="15" y="72" width="95" height="14" rx="4" fill="#1c1c1c" />
+      <rect x="30" y="66" width="65" height="7" fill="#424242" />
+      <!-- Pillar & Arm -->
+      <path d="M 78 66 L 78 30 Q 78 5 52 10 L 47 25 L 62 25 Q 68 25 68 40 L 68 66 Z" fill="#1c1c1c" />
+      <!-- Stage -->
+      <rect x="22" y="46" width="55" height="7" fill="#000000" />
+      <rect x="38" y="42" width="22" height="4" fill="#ffffff" stroke="#000000" stroke-width="1" />
+      <!-- Body tube & Eyepiece -->
+      <path d="M 32 5 L 52 20 L 42 33 L 22 18 Z" fill="#424242" stroke="#1c1c1c" stroke-width="2" />
+      <rect x="45" y="-5" width="13" height="19" rx="2" transform="rotate(35 45 -5)" fill="#757575" stroke="#1c1c1c" stroke-width="1.5" />
+      <rect x="22" y="30" width="11" height="13" transform="rotate(35 22 30)" fill="#9e9e9e" stroke="#1c1c1c" stroke-width="1.5" />
+      <!-- Adjustment knob -->
+      <circle cx="68" cy="35" r="8" fill="#9e9e9e" stroke="#1c1c1c" stroke-width="2" />
+    </g>
+
+    <!-- Tilapia Fish (Bottom Water Section) -->
+    <g transform="translate(145, 355)" filter="url(#subtleShadow)">
+      <!-- Body -->
+      <path d="M 20 40 C 60 -5 145 5 185 40 C 145 75 60 85 20 40 Z" fill="#00332c" stroke="#001a15" stroke-width="3.5" />
+      <!-- Tail fin -->
+      <path d="M 180 40 L 218 12 L 200 40 L 218 68 Z" fill="#00332c" stroke="#001a15" stroke-width="3.5" />
+      <!-- Fins -->
+      <path d="M 92 18 C 102 -4 125 2 118 20 Z" fill="#00332c" stroke="#001a15" stroke-width="2.5" />
+      <path d="M 92 62 C 102 84 125 78 118 60 Z" fill="#00332c" stroke="#001a15" stroke-width="2.5" />
+      <!-- Eye -->
+      <circle cx="45" cy="32" r="7" fill="#ffffff" />
+      <circle cx="44" cy="32" r="3.5" fill="#000000" />
+      <!-- Gill line -->
+      <path d="M 68 22 Q 56 40 68 58" fill="none" stroke="#001a15" stroke-width="3.5" stroke-linecap="round" />
+    </g>
+  </g>
+</svg>

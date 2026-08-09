@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaCRRI Fleet Management System</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app-container">
+        
+        <!-- ========================================================= -->
+        <!-- 1. LOGIN / QUICK ACCESS SCREEN                           -->
+        <!-- ========================================================= -->
+        <div id="view-login" class="login-view-wrapper">
+            <div class="login-card">
+                <div class="logo-container">
+                    <img src="logo.png" alt="NaCRRI Logo" class="nacrri-logo-img" width="130" height="130" />
+                </div>
+                <h1>NaCRRI FLEET</h1>
+                <p class="subtitle">National Crops Resources Research Institute</p>
+                <p class="desc">Fleet Management & Register System</p>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-name">Your Name</label>
+                        <input type="text" id="login-name" placeholder="Enter full name" required value="PHRAO Officer" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-role">System Role</label>
+                        <select id="login-role" required onchange="const p = document.getElementById('group-login-prog'); if(this.value === 'Programme Admin'){ p.style.display='block'; }else{ p.style.display='none'; }">
+                            <option value="Super Admin">Super Admin (PHRAO)</option>
+                            <option value="Programme Admin">Programme Admin (Admin Assistant)</option>
+                            <option value="Management Viewer">Management Viewer (Reader)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="group-login-prog" class="form-group" style="display: none;">
+                        <label for="login-programme">Your Assigned Programme</label>
+                        <select id="login-programme">
+                            <option value="admin">Administration</option>
+                            <option value="horticulture">Horticulture and Oil palm</option>
+                            <option value="legumes">Legumes</option>
+                            <option value="root_crops">Root crops</option>
+                            <option value="cereals">Cereals</option>
+                            <option value="workshop">Workshop</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Access System &rarr;</button>
+                </form>
+
+                <div class="quick-access-section">
+                    <h3>Quick Access for Demo</h3>
+                    <div class="quick-login-grid">
+                        <button class="quick-role-btn" data-role="Super Admin" data-prog="admin" data-name="Mr. Patrick O. (Super Admin)">
+                            <strong>Super Admin</strong>
+                            <span>PHRAO Inspector</span>
+                        </button>
+                        <button class="quick-role-btn" data-role="Programme Admin" data-prog="cereals" data-name="Sarah K. (Cereals Admin)">
+                            <strong>Prog Admin</strong>
+                            <span>Cereals Programme</span>
+                        </button>
+                        <button class="quick-role-btn" data-role="Management Viewer" data-prog="admin" data-name="Dr. Director (Viewer)">
+                            <strong>Management</strong>
+                            <span>Read-Only Dashboard</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- MAIN APPLICATION LAYOUT (HEADER, SIDEBAR, CONTENT)       -->
+        <!-- ========================================================= -->
+        <div id="main-application" class="app-layout-shell hidden">
+            
+            <!-- TOP HEADER -->
+            <header class="app-header">
+                <div class="header-logo-section" data-view="overview">
+                    <div class="header-logo-box">
+                        <img src="logo.png" alt="NaCRRI Logo" class="header-logo-img" width="40" height="40" />
+                    </div>
+                    <div class="header-titles">
+                        <h2>NaCRRI Fleet</h2>
+                        <span>National Crops Resources Research Institute</span>
+                    </div>
+                </div>
+                <div class="header-user-section">
+                    <div class="user-meta-info">
+                        <span class="user-name-label current-user-name">PHRAO Admin</span>
+                        <div class="user-role-container">
+                            <span class="user-role-badge current-user-role">Super Admin</span>
+                            <span class="user-prog-indicator current-user-programme">Administration</span>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="state.activeView = 'login'; app.render();">&larr; Exit</button>
+                </div>
+            </header>
+
+            <!-- MAIN GRID BODY -->
+            <div class="app-body-container">
+                
+                <!-- LEFT SIDEBAR NAVIGATION -->
+                <aside class="app-sidebar">
+                    <nav class="sidebar-nav">
+                        <ul>
+                            <li>
+                                <a href="#" data-view="overview">
+                                    <span class="nav-icon">📊</span>
+                                    <span>Programmes Overview</span>
+                                </a>
+                            </li>
+                            <li class="nav-header">Programmes</li>
+                            <li>
+                                <a href="#" data-view="workspace" data-programme-id="admin">
+                                    <span class="nav-indicator-dot admin"></span>
+                                    <span>Administration</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="workspace" data-programme-id="horticulture">
+                                    <span class="nav-indicator-dot horticulture"></span>
+                                    <span>Horticulture & Oil palm</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="workspace" data-programme-id="legumes">
+                                    <span class="nav-indicator-dot legumes"></span>
+                                    <span>Legumes</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="workspace" data-programme-id="root_crops">
+                                    <span class="nav-indicator-dot root_crops"></span>
+                                    <span>Root Crops</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="workspace" data-programme-id="cereals">
+                                    <span class="nav-indicator-dot cereals"></span>
+                                    <span>Cereals</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="workspace" data-programme-id="workshop">
+                                    <span class="nav-indicator-dot workshop"></span>
+                                    <span>Workshop</span>
+                                </a>
+                            </li>
+                            <li class="nav-header">Analytics & Operations</li>
+                            <li>
+                                <a href="#" data-view="reports">
+                                    <span class="nav-icon">📋</span>
+                                    <span>Reports & Export</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="settings">
+                                    <span class="nav-icon">⚙️</span>
+                                    <span>Settings Manager</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="sidebar-footer">
+                        <div class="footer-powered">NaCRRI Fleet v1.0.0</div>
+                        <div class="footer-date">August 2026</div>
+                    </div>
+                </aside>
+
+                <!-- CENTER MAIN CONTENT WINDOW -->
+                <main class="app-main-content">
+
+                    <!-- ========================================================= -->
+                    <!-- 2. PROGRAMME OVERVIEW (6 Programme Cards Grid)           -->
+                    <!-- ========================================================= -->
+                    <section id="view-overview" class="view-section hidden">
+                        <div class="view-header">
+                            <div class="header-main">
+                                <div class="header-title-flex">
+                                    <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                    <h1>Institute Programmes Overview</h1>
+                                </div>
+                                <p>Cumulative counts and live indicators across all research programmes.</p>
+                            </div>
+                        </div>
+                        
+                        <div id="programmes-grid" class="programmes-grid-container">
+                            <!-- Dynamic programme cards populated by app.js -->
+                        </div>
+                    </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 3. PROGRAMME WORKSPACE (Tabbed Panel)                    -->
+                    <!-- ========================================================= -->
+                    <section id="view-workspace" class="view-section hidden">
+                        <div class="workspace-top-bar">
+                            <div class="header-title-flex">
+                                <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                <h1 id="workspace-header-title">Cereals Workspace</h1>
+                            </div>
+                            <div class="workspace-tabs">
+                                <a href="#" data-tab="dashboard" class="active">Dashboard</a>
+                                <a href="#" data-tab="register">Motor Register</a>
+                                <a href="#" data-tab="service">Service Tracker</a>
+                                <a href="#" data-tab="location">Location & Stay</a>
+                                <a href="#" data-tab="entry-form" id="tab-entry-form">Status / Location Entry</a>
+                            </div>
+                        </div>
+
+                        <!-- TAB CONTENT: DASHBOARD -->
+                        <div id="workspace-dashboard" class="tab-content">
+                            <div class="dashboard-stats-row">
+                                <div class="dash-stat-card total">
+                                    <div class="card-icon">📁</div>
+                                    <div class="card-vals">
+                                        <h3 id="dash-total-motors">0</h3>
+                                        <p>Total Motors</p>
+                                    </div>
+                                </div>
+                                <div class="dash-stat-card serviced">
+                                    <div class="card-icon">🟢</div>
+                                    <div class="card-vals">
+                                        <h3 id="dash-serviced-motors">0</h3>
+                                        <p>Serviced</p>
+                                    </div>
+                                </div>
+                                <div class="dash-stat-card pending">
+                                    <div class="card-icon">🟡</div>
+                                    <div class="card-vals">
+                                        <h3 id="dash-pending-motors">0</h3>
+                                        <p>Pending Service</p>
+                                    </div>
+                                </div>
+                                <div class="dash-stat-card overdue">
+                                    <div class="card-icon">🔴</div>
+                                    <div class="card-vals">
+                                        <h3 id="dash-overdue-motors">0</h3>
+                                        <p>Overdue Service</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-grid-charts">
+                                <div class="chart-container-card">
+                                    <h3>Motors by Classification</h3>
+                                    <div id="dash-type-stats" class="chart-box">
+                                        <!-- CSS dynamic bars here -->
+                                    </div>
+                                </div>
+                                <div class="chart-container-card">
+                                    <h3>Service Operations Ratios</h3>
+                                    <div id="dash-status-stats" class="chart-box">
+                                        <!-- CSS dynamic bars here -->
+                                    </div>
+                                </div>
+                                <div class="chart-container-card">
+                                    <h3>Current Location Categories</h3>
+                                    <div id="dash-location-stats" class="chart-box">
+                                        <!-- CSS dynamic bars here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-footer-sections">
+                                <div class="recent-logs-card">
+                                    <h3>Recent Log Entries</h3>
+                                    <ul id="dash-recent-logs" class="recent-logs-list">
+                                        <!-- Recent logs appended here -->
+                                    </ul>
+                                </div>
+                                <div class="info-guide-card">
+                                    <h3>NaCRRI Operational Rules</h3>
+                                    <div class="guide-content">
+                                        <p>All motor movements to <strong>Field</strong> locations require estimated departure & end date values to enforce stay limits.</p>
+                                        <div class="color-keys-grid">
+                                            <div><span class="dot serviced"></span> Serviced Badges</div>
+                                            <div><span class="dot pending"></span> Pending Badges</div>
+                                            <div><span class="dot overdue"></span> Overdue Badges</div>
+                                            <div><span class="dot-cat field"></span> Field category (blue)</div>
+                                            <div><span class="dot-cat onstation"></span> On station (purple)</div>
+                                            <div><span class="dot-cat offstation"></span> Off station (grey)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB CONTENT: REGISTER -->
+                        <div id="workspace-register" class="tab-content hidden">
+                            <div class="table-actions-header">
+                                <div class="search-filters-group">
+                                    <input type="text" id="reg-search" placeholder="Search registration, responsible custodian..." oninput="app.renderWorkspaceRegister()" />
+                                    <select id="reg-filter-type" onchange="app.renderWorkspaceRegister()">
+                                        <option value="">All Motor Types</option>
+                                        <option value="Vehicle">Vehicles</option>
+                                        <option value="Motorcycle">Motorcycles</option>
+                                        <option value="Tractor">Tractors</option>
+                                        <option value="Van">Vans</option>
+                                        <option value="Bus">Buses</option>
+                                    </select>
+                                    <select id="reg-filter-status" onchange="app.renderWorkspaceRegister()">
+                                        <option value="">All Service Statuses</option>
+                                        <option value="Serviced">Serviced</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Overdue">Overdue</option>
+                                    </select>
+                                </div>
+                                <div class="header-action-btns">
+                                    <button class="btn btn-primary" onclick="app.openAddMotorModal()">+ Register New Motor</button>
+                                </div>
+                            </div>
+
+                            <div class="table-scroll-container">
+                                <table class="nacrri-data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Registration Number</th>
+                                            <th>Motor Type</th>
+                                            <th>Responsible Custodian</th>
+                                            <th>Service Status</th>
+                                            <th>Current Location</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="register-table-body">
+                                        <!-- Loaded by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- TAB CONTENT: SERVICE STATUS TRACKER -->
+                        <div id="workspace-service" class="tab-content hidden">
+                            <div class="tracker-desc-header">
+                                <h3>Service Status Tracker</h3>
+                                <p>Comprehensive checklist of service logs, pending and overdue reasoning.</p>
+                            </div>
+                            <div class="table-scroll-container">
+                                <table class="nacrri-data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Registration</th>
+                                            <th>Motor Type</th>
+                                            <th>Service Status</th>
+                                            <th>Reason for Pending/Overdue</th>
+                                            <th>Odo Reading & Service Station</th>
+                                            <th>Record Date</th>
+                                            <th>Recorded By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="service-table-body">
+                                        <!-- Loaded by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- TAB CONTENT: LOCATION & STAY TRACKER -->
+                        <div id="workspace-location" class="tab-content hidden">
+                            <div class="tracker-desc-header">
+                                <h3>Location & Period-of-Stay Tracker</h3>
+                                <p>Monitors locations, categories, active ranges, and stay durations.</p>
+                            </div>
+                            <div class="table-scroll-container">
+                                <table class="nacrri-data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Registration Number</th>
+                                            <th>Custodian</th>
+                                            <th>Current Location</th>
+                                            <th>Location Category</th>
+                                            <th>Assigned Date Range</th>
+                                            <th>Period of Stay</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="location-table-body">
+                                        <!-- Loaded by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- TAB CONTENT: MOTOR ENTRY FORM -->
+                        <div id="workspace-entry-form" class="tab-content hidden">
+                            <div class="form-container-card">
+                                <h2>Status & Location Entry Form</h2>
+                                <p class="form-instructions">All fields marked with an asterisk (*) are required. Fields dynamically show/hide based on the service status selected.</p>
+                                
+                                <form id="motor-entry-form">
+                                    <div class="form-grid-columns">
+                                        <!-- Left Column: Core Identity -->
+                                        <div class="form-column">
+                                            <h3>1. Motor Identification</h3>
+                                            
+                                            <div class="form-group">
+                                                <label for="form-programme">Programme *</label>
+                                                <select id="form-programme" required onchange="app.populateEntryFormFilters()">
+                                                    <option value="admin">Administration</option>
+                                                    <option value="horticulture">Horticulture and Oil palm</option>
+                                                    <option value="legumes">Legumes</option>
+                                                    <option value="root_crops">Root crops</option>
+                                                    <option value="cereals">Cereals</option>
+                                                    <option value="workshop">Workshop</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="form-motor-type">Type of Motor *</label>
+                                                <select id="form-motor-type" required onchange="app.populateEntryFormFilters()">
+                                                    <option value="Vehicle">Vehicle</option>
+                                                    <option value="Motorcycle">Motorcycle</option>
+                                                    <option value="Tractor">Tractor</option>
+                                                    <option value="Van">Van</option>
+                                                    <option value="Bus">Bus</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="form-registration">Registration Number *</label>
+                                                <select id="form-registration" required>
+                                                    <option value="">-- Select Registration --</option>
+                                                    <!-- Filtered by program + type -->
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="form-responsible-person">Custodian / Responsible Person *</label>
+                                                <select id="form-responsible-person" required>
+                                                    <option value="">-- Select Responsible Person --</option>
+                                                    <!-- Filtered by program -->
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group-row">
+                                                <div class="form-group">
+                                                    <label for="form-entry-date">Entry Date</label>
+                                                    <input type="text" id="form-entry-date" readonly />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="form-recorded-by">Entered By</label>
+                                                    <input type="text" id="form-recorded-by" readonly />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Right Column: Status and Service Details -->
+                                        <div class="form-column">
+                                            <h3>2. Service Status Details</h3>
+                                            
+                                            <div class="form-group">
+                                                <label for="form-service-status">Service Status *</label>
+                                                <select id="form-service-status" required onchange="app.handleFormConditionalVisibility()">
+                                                    <option value="">-- Select Status --</option>
+                                                    <option value="Serviced">Serviced (Completed)</option>
+                                                    <option value="Pending">Pending (Awaiting Service)</option>
+                                                    <option value="Overdue">Overdue (Missed Service)</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Conditional Pending Reason -->
+                                            <div id="group-pending-reason" class="form-group hidden">
+                                                <label for="form-pending-reason">Reason for Pending Status *</label>
+                                                <select id="form-pending-reason">
+                                                    <option value="">-- Select Pending Reason --</option>
+                                                </select>
+                                                <span class="validation-msg">Please select a reason for pending.</span>
+                                            </div>
+
+                                            <!-- Conditional Overdue Reason -->
+                                            <div id="group-overdue-reason" class="form-group hidden">
+                                                <label for="form-overdue-reason">Reason for Overdue Status *</label>
+                                                <select id="form-overdue-reason">
+                                                    <option value="">-- Select Overdue Reason --</option>
+                                                </select>
+                                                <span class="validation-msg">Please select a reason for overdue.</span>
+                                            </div>
+
+                                            <!-- Conditional Serviced Fields -->
+                                            <div id="group-odometer" class="form-group hidden">
+                                                <label for="form-odometer">Odometer Reading (km) *</label>
+                                                <input type="number" id="form-odometer" placeholder="e.g. 104500" min="0" oninput="app.validateForm()" />
+                                                <span class="validation-msg">Please enter a valid odometer number.</span>
+                                                <div class="form-hint-info">Next service will be calculated automatically (+5,000 km)</div>
+                                            </div>
+
+                                            <div id="group-service-station" class="form-group hidden">
+                                                <label for="form-service-station">Service Station *</label>
+                                                <select id="form-service-station">
+                                                    <option value="">-- Select Station --</option>
+                                                </select>
+                                                <span class="validation-msg">Please select a workshop or station.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr class="form-divider" />
+
+                                    <!-- Bottom: Location Details -->
+                                    <div class="form-grid-columns location-section">
+                                        <div class="form-column">
+                                            <h3>3. Current Location Assignment</h3>
+                                            
+                                            <div class="form-group">
+                                                <label for="form-location">Location Assigned *</label>
+                                                <select id="form-location" required onchange="const cat = this.options[this.selectedIndex].getAttribute('data-category') || ''; document.getElementById('form-location-category').value = cat; app.validateForm();">
+                                                    <option value="">-- Select Location --</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="form-location-category">Location Category *</label>
+                                                <select id="form-location-category" required onchange="app.validateForm()">
+                                                    <option value="">-- Category --</option>
+                                                    <option value="Field">Field</option>
+                                                    <option value="On station">On station</option>
+                                                    <option value="Off station">Off station</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-column">
+                                            <h3>4. Deployment Dates</h3>
+                                            
+                                            <div class="form-group-row">
+                                                <div class="form-group">
+                                                    <label for="form-start-date">Start Date</label>
+                                                    <input type="date" id="form-start-date" onchange="app.calculatePeriodOfStay()" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="form-end-date">Expected End Date</label>
+                                                    <input type="date" id="form-end-date" onchange="app.calculatePeriodOfStay()" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="form-period-days">Calculated Period of Stay (days)</label>
+                                                <input type="number" id="form-period-days" readonly value="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-submit-actions">
+                                        <button type="button" class="btn btn-secondary" onclick="app.switchWorkspaceTab('register')">Cancel</button>
+                                        <button type="submit" id="btn-save-entry" class="btn btn-primary" disabled>Save Entry Details</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 10. REPORTS (CSV Export and Table Preview Screen)        -->
+                    <!-- ========================================================= -->
+                    <section id="view-reports" class="view-section hidden">
+                        <div class="view-header">
+                            <div class="header-main">
+                                <div class="header-title-flex">
+                                    <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                    <h1>Institutional Fleet Reports</h1>
+                                </div>
+                                <p>Select dynamic query parameters to compile, preview, and download CSV reports.</p>
+                            </div>
+                        </div>
+
+                        <div class="reports-filter-card">
+                            <div class="filters-grid">
+                                <div class="form-group">
+                                    <label for="report-type">Report Type Target</label>
+                                    <select id="report-type" onchange="app.renderReports()">
+                                        <option value="by_programme">Motors by Programme Scope</option>
+                                        <option value="by_status">Motors by Current Service Status</option>
+                                        <option value="pending">Pending Service Log + Reasons</option>
+                                        <option value="overdue">Overdue Service Log + Reasons</option>
+                                        <option value="serviced">Completed Services (Odo + Stations)</option>
+                                        <option value="by_location">Deployment Location Categories</option>
+                                        <option value="period_of_stay">Period of Stay Ranking (Days)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="report-programme-filter">Programme Context Filter</label>
+                                    <select id="report-programme-filter" onchange="app.renderReports()">
+                                        <option value="">All Programmes</option>
+                                        <option value="admin">Administration</option>
+                                        <option value="horticulture">Horticulture and Oil palm</option>
+                                        <option value="legumes">Legumes</option>
+                                        <option value="root_crops">Root crops</option>
+                                        <option value="cereals">Cereals</option>
+                                        <option value="workshop">Workshop</option>
+                                    </select>
+                                </div>
+                                <div class="reports-action-cell">
+                                    <button class="btn btn-primary btn-block" onclick="app.exportCSV()">Export Table to CSV</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="report-preview-container">
+                            <h3>Report Preview Data Grid</h3>
+                            <div class="table-scroll-container">
+                                <table class="nacrri-data-table reports-preview-table">
+                                    <thead id="reports-table-head">
+                                        <!-- Loaded by app.js -->
+                                    </thead>
+                                    <tbody id="reports-table-body">
+                                        <!-- Loaded by app.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 11. SETTINGS / DROPDOWN MANAGER (Super Admin Only)       -->
+                    <!-- ========================================================= -->
+                    <section id="view-settings" class="view-section hidden">
+                        <div class="view-header">
+                            <div class="header-main">
+                                <div class="header-title-flex">
+                                    <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                    <h1>Settings & Value List Manager</h1>
+                                </div>
+                                <p>Configure dropdown selection contents, service locations, and parameters across the application.</p>
+                            </div>
+                        </div>
+
+                        <div class="settings-grid-cards">
+                            <!-- Column 1: Reasons & Classifications -->
+                            <div class="settings-card">
+                                <h3>Motor Classifications & Station Config</h3>
+                                <div class="form-group">
+                                    <label for="set-motor-types">Motor Types (one per line)</label>
+                                    <textarea id="set-motor-types" rows="5"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-service-stations">Service Workshops / Stations (one per line)</label>
+                                    <textarea id="set-service-stations" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Column 2: Service Reasons -->
+                            <div class="settings-card">
+                                <h3>Service Log Reason Lists</h3>
+                                <div class="form-group">
+                                    <label for="set-pending-reasons">Pending Reasons (one per line)</label>
+                                    <textarea id="set-pending-reasons" rows="5"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="set-overdue-reasons">Overdue Reasons (one per line)</label>
+                                    <textarea id="set-overdue-reasons" rows="5"></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Column 3: Locations Categories -->
+                            <div class="settings-card full-width">
+                                <h3>Deployment Locations Registry</h3>
+                                <p class="setting-hint">Format: <strong>Location Name | Category</strong> (Category must be either: <em>Field</em>, <em>On station</em>, or <em>Off station</em>)</p>
+                                <div class="form-group">
+                                    <label for="set-locations">Registered Locations & Categories</label>
+                                    <textarea id="set-locations" rows="8"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-action-row">
+                            <button class="btn btn-secondary" onclick="if(confirm('Are you sure you want to reset all mock databases and preferences to system defaults?')){ state.resetToDefaults(); }">Reset Database Defaults</button>
+                            <button class="btn btn-primary" onclick="app.saveSettings()">Save Configuration Lists</button>
+                        </div>
+                    </section>
+
+                </main>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- 9. MOTOR DETAILS VIEW (Right Sliding Panel / Drawer)      -->
+        <!-- ========================================================= -->
+        <div id="details-drawer" class="details-drawer-wrapper">
+            <button id="close-drawer" class="close-drawer-btn" aria-label="Close panel">&times;</button>
+            <div id="drawer-content" class="drawer-scroll-container">
+                <!-- Dynamically populated drawer details by app.js -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Core App JS -->
+    <script src="app.js"></script>
+</body>
+</html>
