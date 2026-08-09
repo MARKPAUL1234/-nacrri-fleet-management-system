@@ -337,6 +337,19 @@ class AppController {
             }
         }, { passive: true });
 
+        document.addEventListener("touchmove", (e) => {
+            if (e.touches.length === 1) {
+                const diffX = e.touches[0].clientX - touchStartX;
+                const diffY = e.touches[0].clientY - touchStartY;
+                // Prevent browser full-page panning when horizontal swipe is detected
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 12) {
+                    if (e.cancelable) {
+                        e.preventDefault();
+                    }
+                }
+            }
+        }, { passive: false });
+
         document.addEventListener("touchend", (e) => {
             if (e.changedTouches.length === 1) {
                 const touchEndX = e.changedTouches[0].clientX;
@@ -456,7 +469,7 @@ class AppController {
         const diffY = endY - startY;
 
         // Ensure horizontal swipe dominates over vertical scroll
-        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
             if (state.activeView === "workspace") {
                 const tabs = ["dashboard", "register", "service", "location", "entry-form"];
                 const currIdx = tabs.indexOf(state.activeWorkspaceTab);

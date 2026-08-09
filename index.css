@@ -435,11 +435,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Main Content Area */
-.app-main-content {
-    padding: 24px;
+.app-main-content-area {
+    flex: 1;
+    padding: 30px;
     overflow-y: auto;
+    overflow-x: hidden;
+    touch-action: pan-y;
     position: relative;
     background-color: #f8faf9;
+}
+
+.tab-content {
+    touch-action: pan-y;
+    width: 100%;
+    position: relative;
+    will-change: transform, opacity;
 }
 
 .view-section {
