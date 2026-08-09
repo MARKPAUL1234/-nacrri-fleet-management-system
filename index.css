@@ -446,6 +446,37 @@ h1, h2, h3, h4, h5, h6 {
     animation: fadeIn var(--transition-speed) ease-out;
 }
 
+/* Horizontal Tab Slide Keyframes */
+.slide-left-enter {
+    animation: slideLeftEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slide-right-enter {
+    animation: slideRightEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideLeftEnter {
+    from {
+        transform: translateX(45px);
+        opacity: 0.2;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideRightEnter {
+    from {
+        transform: translateX(-45px);
+        opacity: 0.2;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .view-header {
     display: flex;
     justify-content: space-between;

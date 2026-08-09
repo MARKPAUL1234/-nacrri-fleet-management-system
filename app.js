@@ -326,6 +326,25 @@ class AppController {
             }
         });
 
+        // Touch Swipe Gesture Handler for Mobile & Smart Screens
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener("touchstart", (e) => {
+            if (e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        document.addEventListener("touchend", (e) => {
+            if (e.changedTouches.length === 1) {
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                this.handleSwipeGesture(touchStartX, touchStartY, touchEndX, touchEndY);
+            }
+        }, { passive: true });
+
         // Global delegate for SPA navigation links
         document.addEventListener("click", (e) => {
             const navLink = e.target.closest("[data-view]");
@@ -413,11 +432,65 @@ class AppController {
             });
         }
 
+        const prevTab = state.activeWorkspaceTab;
         state.activeWorkspaceTab = tab;
         this.render();
+
+        const tabs = ["dashboard", "register", "service", "location", "entry-form"];
+        const prevIdx = tabs.indexOf(prevTab);
+        const newIdx = tabs.indexOf(tab);
+        if (prevIdx !== -1 && newIdx !== -1 && prevIdx !== newIdx) {
+            this.triggerSlideAnimation(newIdx > prevIdx ? "left" : "right");
+        }
         
         if (tab === "entry-form") {
             this.initEntryForm();
+        }
+    }
+
+    handleSwipeGesture(startX, startY, endX, endY) {
+        // Do not swipe if details drawer is open
+        if (state.viewingMotorId) return;
+
+        const diffX = endX - startX;
+        const diffY = endY - startY;
+
+        // Ensure horizontal swipe dominates over vertical scroll
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+            if (state.activeView === "workspace") {
+                const tabs = ["dashboard", "register", "service", "location", "entry-form"];
+                const currIdx = tabs.indexOf(state.activeWorkspaceTab);
+
+                if (diffX < 0) {
+                    // Swipe Left -> Go to Next Tab if available
+                    if (currIdx >= 0 && currIdx < tabs.length - 1) {
+                        const nextTab = tabs[currIdx + 1];
+                        this.switchWorkspaceTab(nextTab);
+                    }
+                    // Boundary check: If on last tab, no sliding occurs!
+                } else {
+                    // Swipe Right -> Go to Previous Tab if available
+                    if (currIdx > 0) {
+                        const prevTab = tabs[currIdx - 1];
+                        this.switchWorkspaceTab(prevTab);
+                    } else if (currIdx === 0 && state.currentUser.role !== "Programme Admin") {
+                        // On first tab, swipe right goes back to Overview
+                        this.switchView("overview");
+                    }
+                }
+            } else if (state.activeView === "overview" && diffX < 0) {
+                // On Overview, swipe left opens workspace
+                this.switchView("workspace");
+            }
+        }
+    }
+
+    triggerSlideAnimation(direction) {
+        const activeTabEl = document.querySelector(".tab-content:not(.hidden)");
+        if (activeTabEl) {
+            activeTabEl.classList.remove("slide-left-enter", "slide-right-enter");
+            void activeTabEl.offsetWidth; // trigger reflow
+            activeTabEl.classList.add(direction === "left" ? "slide-left-enter" : "slide-right-enter");
         }
     }
 
