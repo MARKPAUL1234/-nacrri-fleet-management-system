@@ -1549,17 +1549,76 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
 }
 
 /* ==========================================================================
-   11. RESPONSIVE MEDIA QUERIES
+   11. RESPONSIVE MEDIA QUERIES & MOBILE TOUCH PWA STYLING
    ========================================================================== */
+
+/* Mobile Bottom Navigation Bar */
+.mobile-bottom-nav {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .app-body-container {
-        grid-template-columns: 200px 1fr;
+        grid-template-columns: 180px 1fr;
+    }
+
+    .programmes-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .details-drawer-wrapper {
+        width: 420px;
     }
 }
 
 @media (max-width: 768px) {
     body {
-        font-size: 13px;
+        font-size: 14px;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .login-view-wrapper {
+        padding: 16px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 24px 20px;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .login-card .nacrri-logo-img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .login-card h1 {
+        font-size: 1.6rem;
+    }
+
+    .login-card input,
+    .login-card select,
+    .login-card button {
+        min-height: 48px;
+        font-size: 1rem;
+        border-radius: 12px;
+    }
+
+    .app-header {
+        padding: 10px 16px;
+    }
+
+    .header-titles h2 {
+        font-size: 1.15rem;
+    }
+
+    .header-titles span {
+        display: none;
     }
 
     .app-body-container {
@@ -1567,11 +1626,64 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
     }
 
     .app-sidebar {
-        display: none; /* In production: add drawer/toggle menu */
+        display: none;
+    }
+
+    /* Mobile Bottom Navigation Bar */
+    .mobile-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background-color: #ffffff;
+        border-top: 1px solid var(--border-light);
+        z-index: 99;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 6px;
+        flex: 1;
+        transition: color 0.2s ease;
+    }
+
+    .mobile-nav-item.active,
+    .mobile-nav-item:hover {
+        color: var(--primary-green);
+    }
+
+    .mobile-nav-icon-img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        margin-bottom: 2px;
+    }
+
+    .main-content-area {
+        padding: 16px 14px 80px 14px;
+    }
+
+    .programmes-grid-container {
+        grid-template-columns: 1fr;
+        gap: 14px;
     }
 
     .dashboard-stats-row {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .dashboard-grid-charts {
@@ -1582,9 +1694,40 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
         grid-template-columns: 1fr;
     }
 
+    .table-actions-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .search-filters-group {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .search-filters-group input,
+    .search-filters-group select {
+        width: 100%;
+        min-height: 46px;
+        font-size: 0.95rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: var(--border-radius-md);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .nacrri-data-table {
+        min-width: 650px;
+        font-size: 0.84rem;
+    }
+
     .form-grid-columns {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 14px;
     }
 
     .filters-grid {
@@ -1596,24 +1739,24 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
         width: 100%;
     }
 
-    .close-drawer-btn {
-        left: auto;
-        right: 15px;
-        top: 15px;
-        border: 1px solid var(--border-light);
+    .btn-back {
+        padding: 5px 12px;
+        font-size: 0.8rem;
     }
 }
 
 @media (max-width: 480px) {
-    .login-card {
-        padding: 24px;
-    }
-    
-    .quick-login-grid {
+    .dashboard-stats-row {
         grid-template-columns: 1fr;
     }
 
-    .dashboard-stats-row {
-        grid-template-columns: 1fr;
+    .header-title-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .header-title-flex h1 {
+        font-size: 1.4rem;
     }
 }

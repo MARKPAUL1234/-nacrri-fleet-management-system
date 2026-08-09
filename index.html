@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#0F5132" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="logo.png" />
     <title>NaCRRI Fleet Management System</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -656,6 +661,26 @@
                     </section>
 
                 </main>
+
+                <!-- MOBILE BOTTOM NAVIGATION BAR -->
+                <nav class="mobile-bottom-nav">
+                    <a href="#" data-view="overview" class="mobile-nav-item">
+                        <img src="icons/icon_vehicle.png" class="mobile-nav-icon-img" alt="Overview" />
+                        <span class="nav-label">Overview</span>
+                    </a>
+                    <a href="#" data-view="workspace" class="mobile-nav-item">
+                        <img src="icons/icon_tractor.png" class="mobile-nav-icon-img" alt="Workspace" />
+                        <span class="nav-label">Workspace</span>
+                    </a>
+                    <a href="#" data-view="reports" class="mobile-nav-item">
+                        <img src="icons/icon_van.png" class="mobile-nav-icon-img" alt="Reports" />
+                        <span class="nav-label">Reports</span>
+                    </a>
+                    <a href="#" onclick="app.logout(); return false;" class="mobile-nav-item">
+                        <img src="icons/icon_bus.png" class="mobile-nav-icon-img" alt="Logout" />
+                        <span class="nav-label">Logout</span>
+                    </a>
+                </nav>
             </div>
         </div>
 

@@ -1,0 +1,17 @@
+{
+  "name": "NaCRRI Fleet Management System",
+  "short_name": "NaCRRI Fleet",
+  "description": "Programme-based fleet register for National Crops Resources Research Institute (NaCRRI)",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F5132",
+  "theme_color": "#0F5132",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
