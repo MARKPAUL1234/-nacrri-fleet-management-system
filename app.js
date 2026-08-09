@@ -462,37 +462,36 @@ class AppController {
     }
 
     handleSwipeGesture(startX, startY, endX, endY) {
-        // Do not swipe if details drawer is open
-        if (state.viewingMotorId) return;
+        // Do not swipe if motor details drawer or modal is open
+        if (state.viewingMotorId || document.querySelector(".modal.open")) return;
 
         const diffX = endX - startX;
         const diffY = endY - startY;
 
         // Ensure horizontal swipe dominates over vertical scroll
         if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+            const tabs = ["dashboard", "register", "service", "location", "entry-form"];
+
             if (state.activeView === "workspace") {
-                const tabs = ["dashboard", "register", "service", "location", "entry-form"];
                 const currIdx = tabs.indexOf(state.activeWorkspaceTab);
 
                 if (diffX < 0) {
-                    // Swipe Left -> Go to Next Tab if available
+                    // SWIPE LEFT: Forward progress -> Dashboard (1) -> Motor Register (2) -> Service Tracker (3) -> Location & Stay (4) -> Status / Location Entry (5)
                     if (currIdx >= 0 && currIdx < tabs.length - 1) {
                         const nextTab = tabs[currIdx + 1];
                         this.switchWorkspaceTab(nextTab);
                     }
-                    // Boundary check: If on last tab, no sliding occurs!
-                } else {
-                    // Swipe Right -> Go to Previous Tab if available
+                    // Strict Boundary: On tab 5 (Status / Location Entry), no sliding takes place!
+                } else if (diffX > 0) {
+                    // SWIPE RIGHT: Backward progress -> Status / Location Entry (5) -> Location & Stay (4) -> Service Tracker (3) -> Motor Register (2) -> Dashboard (1)
                     if (currIdx > 0) {
                         const prevTab = tabs[currIdx - 1];
                         this.switchWorkspaceTab(prevTab);
-                    } else if (currIdx === 0 && state.currentUser.role !== "Programme Admin") {
-                        // On first tab, swipe right goes back to Overview
-                        this.switchView("overview");
                     }
+                    // Strict Boundary: On tab 1 (Dashboard), no sliding takes place!
                 }
             } else if (state.activeView === "overview" && diffX < 0) {
-                // On Overview, swipe left opens workspace
+                // On Overview page, swipe left opens Workspace on Dashboard (tab 1)
                 this.switchView("workspace");
             }
         }
