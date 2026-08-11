@@ -6,7 +6,18 @@ const ASSETS_TO_CACHE = [
   "./app.js",
   "./logo.svg",
   "./logo.png",
-  "./manifest.json"
+  "./manifest.json",
+  "./icons/icon_bus.png",
+  "./icons/icon_motorcycle.png",
+  "./icons/icon_programme_admin.png",
+  "./icons/icon_programme_cereals.png",
+  "./icons/icon_programme_horticulture.png",
+  "./icons/icon_programme_legumes.png",
+  "./icons/icon_programme_rootcrops.png",
+  "./icons/icon_programme_workshop.png",
+  "./icons/icon_tractor.png",
+  "./icons/icon_van.png",
+  "./icons/icon_vehicle.png"
 ];
 
 self.addEventListener("install", (e) => {

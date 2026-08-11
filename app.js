@@ -60,7 +60,12 @@ const DEFAULT_PROGRAMMES = [
 const DEFAULT_PERSONS = [
     { id: "p1", name: "John M.", programme_id: "admin" },
     { id: "p2", name: "Sarah K.", programme_id: "horticulture" },
-    { id: "p3", name: "Peter O.", programme_id: "legumes" },
+    { id: "p3", name: "Gerald", programme_id: "legumes" },
+    { id: "p_l2", name: "Phillip", programme_id: "legumes" },
+    { id: "p_l3", name: "Ssozi", programme_id: "legumes" },
+    { id: "p_l4", name: "Ssekandi", programme_id: "legumes" },
+    { id: "p_l5", name: "Dr. Ugen", programme_id: "legumes" },
+    { id: "p_l6", name: "Mugagga", programme_id: "legumes" },
     { id: "p4", name: "Amina N.", programme_id: "root_crops" },
     { id: "p5", name: "David L.", programme_id: "cereals" },
     { id: "p6", name: "Grace T.", programme_id: "workshop" },
@@ -71,25 +76,32 @@ const DEFAULT_PERSONS = [
 // ≥2 motors per programme across all 3 types (Vehicle, Motorcycle, Tractor)
 const DEFAULT_MOTORS = [
     // Administration
-    { id: "m1", programme_id: "admin", motor_type: "Vehicle", registration_number: "UG-101-ABC", responsible_person_id: "p1" },
-    { id: "m2", programme_id: "admin", motor_type: "Motorcycle", registration_number: "MC-011", responsible_person_id: "p7" },
-    { id: "m3", programme_id: "admin", motor_type: "Tractor", registration_number: "TR-001", responsible_person_id: "p1" },
+    { id: "m1", programme_id: "admin", motor_type: "Vehicle", registration_number: "UG-101-ABC", responsible_person_id: "p1", make_of_motor: "Toyota Land Cruiser", remarks: "Maintained in excellent working condition" },
+    { id: "m2", programme_id: "admin", motor_type: "Motorcycle", registration_number: "MC-011", responsible_person_id: "p7", make_of_motor: "Yamaha DT 125", remarks: "Due for tire change soon" },
+    { id: "m3", programme_id: "admin", motor_type: "Tractor", registration_number: "TR-001", responsible_person_id: "p1", make_of_motor: "Massey Ferguson 375", remarks: "Operates daily on station" },
     // Horticulture and Oil palm
-    { id: "m4", programme_id: "horticulture", motor_type: "Vehicle", registration_number: "UG-202-DEF", responsible_person_id: "p2" },
-    { id: "m5", programme_id: "horticulture", motor_type: "Motorcycle", registration_number: "MC-012", responsible_person_id: "p2" },
+    { id: "m4", programme_id: "horticulture", motor_type: "Vehicle", registration_number: "UG-202-DEF", responsible_person_id: "p2", make_of_motor: "Toyota Hilux D/Cab", remarks: "Slight scratch on passenger side" },
+    { id: "m5", programme_id: "horticulture", motor_type: "Motorcycle", registration_number: "MC-012", responsible_person_id: "p2", make_of_motor: "Honda CG125", remarks: "Maintained by horticulture team" },
     // Legumes
-    { id: "m6", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UG-303-GHI", responsible_person_id: "p3" },
-    { id: "m7", programme_id: "legumes", motor_type: "Tractor", registration_number: "TR-002", responsible_person_id: "p3" },
+    { id: "m6", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UBJ 186V", responsible_person_id: "p3", make_of_motor: "FORD RANGER DBL XLS 2.2D (PICK UP DOUBLE CABIN)", remarks: "Very good" },
+    { id: "m7", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UAY 107Z", responsible_person_id: "p_l2", make_of_motor: "TOYOTA HILUX DOUBLE CABIN KUN26R-PRMSYN", remarks: "Good" },
+    { id: "m_l3", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UAR 626Y", responsible_person_id: "p_l3", make_of_motor: "TOYOTA HILUX DOUBLE CABIN KUN25R-PRMDHN", remarks: "Good" },
+    { id: "m_l4", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UAJ 946X", responsible_person_id: "p_l4", make_of_motor: "TOYOTA HILUX KUN25R-PRMDHN(DOUBLE CABIN PICK UP)", remarks: "Good" },
+    { id: "m_l7", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UAA 708N", responsible_person_id: "p_l5", make_of_motor: "TOYOTA RAV4 ACA21R(STATION WAGON)", remarks: "Good" },
+    { id: "m_l8", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UAT 561X", responsible_person_id: "p_l6", make_of_motor: "TOYOTA LAND CRUISER (STATION WAGON)", remarks: "Good" },
+    { id: "m_l9", programme_id: "legumes", motor_type: "Vehicle", registration_number: "UAB 857Z", responsible_person_id: "", make_of_motor: "TOYOTA DOUBLE CABIN PICKUP", remarks: "Fair" },
+    { id: "m_l10", programme_id: "legumes", motor_type: "Motorcycle", registration_number: "UEC 177Y", responsible_person_id: "p3", make_of_motor: "Motorcycle", remarks: "-" },
+    { id: "m_l11", programme_id: "legumes", motor_type: "Motorcycle", registration_number: "MC-LEG-PEND", responsible_person_id: "p_l2", make_of_motor: "Motorcycle", remarks: "-" },
     // Root crops
-    { id: "m8", programme_id: "root_crops", motor_type: "Vehicle", registration_number: "UG-404-JKL", responsible_person_id: "p4" },
-    { id: "m9", programme_id: "root_crops", motor_type: "Motorcycle", registration_number: "MC-013", responsible_person_id: "p4" },
+    { id: "m8", programme_id: "root_crops", motor_type: "Vehicle", registration_number: "UG-404-JKL", responsible_person_id: "p4", make_of_motor: "Mitsubishi L200", remarks: "Under administrative custody" },
+    { id: "m9", programme_id: "root_crops", motor_type: "Motorcycle", registration_number: "MC-013", responsible_person_id: "p4", make_of_motor: "Yamaha Crux", remarks: "Good operational state" },
     // Cereals
-    { id: "m10", programme_id: "cereals", motor_type: "Vehicle", registration_number: "UG-505-MNO", responsible_person_id: "p5" },
-    { id: "m11", programme_id: "cereals", motor_type: "Motorcycle", registration_number: "MC-014", responsible_person_id: "p8" },
-    { id: "m12", programme_id: "cereals", motor_type: "Tractor", registration_number: "TR-003", responsible_person_id: "p5" },
+    { id: "m10", programme_id: "cereals", motor_type: "Vehicle", registration_number: "UG-505-MNO", responsible_person_id: "p5", make_of_motor: "Nissan Patrol", remarks: "Assigned to head of cereals programme" },
+    { id: "m11", programme_id: "cereals", motor_type: "Motorcycle", registration_number: "MC-014", responsible_person_id: "p8", make_of_motor: "Bajaj Boxer 150", remarks: "Used for field data collection" },
+    { id: "m12", programme_id: "cereals", motor_type: "Tractor", registration_number: "TR-003", responsible_person_id: "p5", make_of_motor: "Massey Ferguson 290", remarks: "Used for cereal planting fields" },
     // Workshop
-    { id: "m13", programme_id: "workshop", motor_type: "Vehicle", registration_number: "UG-606-PQR", responsible_person_id: "p6" },
-    { id: "m14", programme_id: "workshop", motor_type: "Tractor", registration_number: "TR-004", responsible_person_id: "p6" }
+    { id: "m13", programme_id: "workshop", motor_type: "Vehicle", registration_number: "UG-606-PQR", responsible_person_id: "p6", make_of_motor: "Toyota Land Cruiser Pick-up", remarks: "Workshop utility vehicle" },
+    { id: "m14", programme_id: "workshop", motor_type: "Tractor", registration_number: "TR-004", responsible_person_id: "p6", make_of_motor: "New Holland TD5", remarks: "Workshop deployment tractor" }
 ];
 
 // Seed Service Records (Initial Statuses)
@@ -99,8 +111,15 @@ const DEFAULT_SERVICE_RECORDS = [
     { id: "sr3", motor_id: "m3", status: "Overdue", reason_pending: "", reason_overdue: "Missed service date", odometer_reading: "", next_service_odometer: "", service_station: "", recorded_by: "John M.", created_at: "2026-07-28" },
     { id: "sr4", motor_id: "m4", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 89300, next_service_odometer: 94300, service_station: "Regional Workshop", recorded_by: "Sarah K.", created_at: "2026-08-02" },
     { id: "sr5", motor_id: "m5", status: "Pending", reason_pending: "Workshop slot not available", reason_overdue: "", odometer_reading: "", next_service_odometer: "", service_station: "", recorded_by: "Sarah K.", created_at: "2026-08-06" },
-    { id: "sr6", motor_id: "m6", status: "Overdue", reason_pending: "", reason_overdue: "Motor was in use", odometer_reading: "", next_service_odometer: "", service_station: "", recorded_by: "Peter O.", created_at: "2026-07-20" },
-    { id: "sr7", motor_id: "m7", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 4200, next_service_odometer: 4700, service_station: "External Service Station", recorded_by: "Peter O.", created_at: "2026-08-03" },
+    { id: "sr6", motor_id: "m6", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 15000, next_service_odometer: 20000, service_station: "Main Workshop", recorded_by: "Gerald", created_at: "2026-08-01" },
+    { id: "sr7", motor_id: "m7", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 24000, next_service_odometer: 29000, service_station: "Main Workshop", recorded_by: "Phillip", created_at: "2026-08-02" },
+    { id: "sr_l3", motor_id: "m_l3", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 48000, next_service_odometer: 53000, service_station: "Main Workshop", recorded_by: "Ssozi", created_at: "2026-08-03" },
+    { id: "sr_l4", motor_id: "m_l4", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 32000, next_service_odometer: 37000, service_station: "Main Workshop", recorded_by: "Ssekandi", created_at: "2026-08-03" },
+    { id: "sr_l7", motor_id: "m_l7", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 96000, next_service_odometer: 101000, service_station: "Main Workshop", recorded_by: "Dr. Ugen", created_at: "2026-08-04" },
+    { id: "sr_l8", motor_id: "m_l8", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 128000, next_service_odometer: 133000, service_station: "Main Workshop", recorded_by: "Mugagga", created_at: "2026-08-05" },
+    { id: "sr_l9", motor_id: "m_l9", status: "Pending", reason_pending: "Awaiting inspection", reason_overdue: "", odometer_reading: "", next_service_odometer: "", service_station: "", recorded_by: "Gerald", created_at: "2026-08-05" },
+    { id: "sr_l10", motor_id: "m_l10", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 5000, next_service_odometer: 10000, service_station: "Main Workshop", recorded_by: "Gerald", created_at: "2026-08-06" },
+    { id: "sr_l11", motor_id: "m_l11", status: "Pending", reason_pending: "Spare parts not available", reason_overdue: "", odometer_reading: "", next_service_odometer: "", service_station: "", recorded_by: "Phillip", created_at: "2026-08-06" },
     { id: "sr8", motor_id: "m8", status: "Pending", reason_pending: "Awaiting approval", reason_overdue: "", odometer_reading: "", next_service_odometer: "", service_station: "", recorded_by: "Amina N.", created_at: "2026-08-07" },
     { id: "sr9", motor_id: "m9", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 15400, next_service_odometer: 17400, service_station: "On-site Mechanic", recorded_by: "Amina N.", created_at: "2026-08-04" },
     { id: "sr10", motor_id: "m10", status: "Serviced", reason_pending: "", reason_overdue: "", odometer_reading: 201100, next_service_odometer: 206100, service_station: "Main Workshop", recorded_by: "David L.", created_at: "2026-08-02" },
@@ -117,8 +136,15 @@ const DEFAULT_LOCATION_ASSIGNMENTS = [
     { id: "la3", motor_id: "m3", location_name: "Field Site A", category: "Field", start_date: "2026-07-28", end_date: "2026-08-12", period_days: 15 },
     { id: "la4", motor_id: "m4", location_name: "Field Site B", category: "Field", start_date: "2026-08-02", end_date: "2026-08-10", period_days: 8 },
     { id: "la5", motor_id: "m5", location_name: "Partner Station", category: "Off station", start_date: "2026-08-06", end_date: "2026-08-12", period_days: 6 },
-    { id: "la6", motor_id: "m6", location_name: "Field Site A", category: "Field", start_date: "2026-07-20", end_date: "2026-08-05", period_days: 16 },
+    { id: "la6", motor_id: "m6", location_name: "Headquarters", category: "On station", start_date: "2026-08-01", end_date: "2026-08-15", period_days: 14 },
     { id: "la7", motor_id: "m7", location_name: "Research Station", category: "On station", start_date: "2026-08-03", end_date: "2026-08-20", period_days: 17 },
+    { id: "la_l3", motor_id: "m_l3", location_name: "Field Site A", category: "Field", start_date: "2026-08-01", end_date: "2026-08-15", period_days: 14 },
+    { id: "la_l4", motor_id: "m_l4", location_name: "Field Site B", category: "Field", start_date: "2026-08-02", end_date: "2026-08-10", period_days: 8 },
+    { id: "la_l7", motor_id: "m_l7", location_name: "Research Station", category: "On station", start_date: "2026-08-03", end_date: "2026-08-20", period_days: 17 },
+    { id: "la_l8", motor_id: "m_l8", location_name: "Partner Station", category: "Off station", start_date: "2026-08-04", end_date: "2026-08-14", period_days: 10 },
+    { id: "la_l9", motor_id: "m_l9", location_name: "Headquarters", category: "On station", start_date: "2026-08-05", end_date: "2026-08-15", period_days: 10 },
+    { id: "la_l10", motor_id: "m_l10", location_name: "Research Station", category: "On station", start_date: "2026-08-05", end_date: "2026-08-15", period_days: 10 },
+    { id: "la_l11", motor_id: "m_l11", location_name: "Headquarters", category: "On station", start_date: "2026-08-06", end_date: "2026-08-16", period_days: 10 },
     { id: "la8", motor_id: "m8", location_name: "Off-site Location", category: "Off station", start_date: "2026-08-07", end_date: "2026-08-15", period_days: 8 },
     { id: "la9", motor_id: "m9", location_name: "Field Site B", category: "Field", start_date: "2026-08-04", end_date: "2026-08-14", period_days: 10 },
     { id: "la10", motor_id: "m10", location_name: "Headquarters", category: "On station", start_date: "2026-08-02", end_date: "2026-08-09", period_days: 7 },
@@ -245,14 +271,16 @@ class StateStore {
     }
 
     // Adds a brand new motor to the register
-    addMotor(programmeId, motorType, registrationNumber, responsiblePersonId) {
+    addMotor(programmeId, motorType, registrationNumber, responsiblePersonId, makeOfMotor = "", remarks = "") {
         const id = "m_" + Date.now();
         const newMotor = {
             id,
             programme_id: programmeId,
             motor_type: motorType,
             registration_number: registrationNumber,
-            responsible_person_id: responsiblePersonId
+            responsible_person_id: responsiblePersonId,
+            make_of_motor: makeOfMotor,
+            remarks: remarks
         };
         this.motors.push(newMotor);
         this.saveToStorage();
@@ -554,6 +582,12 @@ class AppController {
         }
     }
 
+    logout() {
+        state.currentUser = null;
+        state.activeView = "login";
+        this.render();
+    }
+
     // --- FORM HANDLERS ---
     initEntryForm(editMotorId = null) {
         const form = document.getElementById("motor-entry-form");
@@ -724,6 +758,28 @@ class AppController {
         const submitBtn = document.getElementById("btn-save-entry");
         if (!form || !submitBtn) return;
 
+        const category = document.getElementById("form-location-category")?.value || "";
+        const startDateEl = document.getElementById("form-start-date");
+        const endDateEl = document.getElementById("form-end-date");
+
+        if (startDateEl && endDateEl) {
+            if (category === "Field") {
+                startDateEl.required = true;
+                endDateEl.required = true;
+            } else {
+                startDateEl.required = false;
+                endDateEl.required = false;
+            }
+
+            const startVal = startDateEl.value;
+            const endVal = endDateEl.value;
+            if (startVal && endVal && new Date(endVal) < new Date(startVal)) {
+                endDateEl.setCustomValidity("Expected End Date cannot be before Start Date.");
+            } else {
+                endDateEl.setCustomValidity("");
+            }
+        }
+
         // Basic HTML5 validation + conditional field custom validations
         const isValid = form.checkValidity();
         submitBtn.disabled = !isValid;
@@ -820,7 +876,7 @@ class AppController {
             "admin": "icons/icon_programme_admin.png",
             "horticulture": "icons/icon_programme_horticulture.png",
             "legumes": "icons/icon_programme_legumes.png",
-            "rootcrops": "icons/icon_programme_rootcrops.png",
+            "root_crops": "icons/icon_programme_rootcrops.png",
             "cereals": "icons/icon_programme_cereals.png",
             "workshop": "icons/icon_programme_workshop.png"
         };
@@ -1036,13 +1092,11 @@ class AppController {
         });
 
         if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="empty-table">No matching motors found in this programme.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" class="empty-table">No matching motors found in this programme.</td></tr>`;
             return;
         }
 
-        filtered.forEach(m => {
-            const service = state.getMotorLatestStatus(m.id);
-            const loc = state.getMotorLatestLocation(m.id);
+        filtered.forEach((m, idx) => {
             const personName = state.getPersonName(m.responsible_person_id);
 
             const tr = document.createElement("tr");
@@ -1053,11 +1107,12 @@ class AppController {
             const iconHTML = getMotorIconHTML(m.motor_type);
 
             tr.innerHTML = `
-                <td><span class="motor-icon">${iconHTML}</span> ${m.registration_number}</td>
+                <td>${idx + 1}</td>
+                <td><span class="motor-icon">${iconHTML}</span> <strong>${m.registration_number}</strong></td>
+                <td>${m.make_of_motor || "-"}</td>
                 <td>${m.motor_type}</td>
                 <td>${personName}</td>
-                <td><span class="badge ${service.status.toLowerCase()}">${service.status}</span></td>
-                <td><span class="badge-cat ${loc.category.toLowerCase().replace(" ", "")}">${loc.location_name} (${loc.category})</span></td>
+                <td>${m.remarks || "-"}</td>
                 <td class="action-cell">
                     <button class="btn-table btn-view" onclick="event.stopPropagation(); app.openDetailsDrawer('${m.id}')">View</button>
                     ${state.currentUser.role !== "Management Viewer" ? `<button class="btn-table btn-edit" onclick="event.stopPropagation(); app.startStatusUpdate('${m.id}')">Update Status</button>` : ""}
@@ -1247,9 +1302,11 @@ class AppController {
             <div class="drawer-section">
                 <h3>Core Specifications</h3>
                 <table class="details-mini-table">
-                    <tr><th>Motor Type:</th><td>${m.motor_type}</td></tr>
-                    <tr><th>Registration:</th><td>${m.registration_number}</td></tr>
-                    <tr><th>Responsible Custodian:</th><td>${personName}</td></tr>
+                    <tr><th>Motor Registration Number:</th><td><strong>${m.registration_number}</strong></td></tr>
+                    <tr><th>Make of Motor:</th><td>${m.make_of_motor || "-"}</td></tr>
+                    <tr><th>Type of Motor:</th><td>${m.motor_type}</td></tr>
+                    <tr><th>Driven By:</th><td>${personName}</td></tr>
+                    <tr><th>Remarks:</th><td>${m.remarks || "-"}</td></tr>
                 </table>
             </div>
 
@@ -1624,14 +1681,22 @@ class AppController {
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="new-make">Make of Motor</label>
+                        <input type="text" id="new-make" placeholder="e.g. Toyota Land Cruiser" required />
+                    </div>
+                    <div class="form-group">
                         <label for="new-reg">Registration Number</label>
                         <input type="text" id="new-reg" placeholder="e.g. UG-707-XYZ" required />
                     </div>
                     <div class="form-group">
-                        <label for="new-custodian">Responsible custodian</label>
+                        <label for="new-custodian">Responsible Custodian</label>
                         <select id="new-custodian" required>
                             ${personOptions}
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-remarks">Remarks</label>
+                        <input type="text" id="new-remarks" placeholder="e.g. Good working condition" />
                     </div>
                     <div class="modal-actions">
                         <button type="button" class="btn btn-secondary" onclick="app.closeAddMotorModal()">Cancel</button>
@@ -1667,8 +1732,10 @@ class AppController {
     submitNewMotorForm() {
         const progId = document.getElementById("new-prog").value;
         const type = document.getElementById("new-type").value;
+        const make = document.getElementById("new-make").value.trim();
         const reg = document.getElementById("new-reg").value.trim().toUpperCase();
         const custodian = document.getElementById("new-custodian").value;
+        const remarks = document.getElementById("new-remarks").value.trim();
 
         if (!reg) return;
 
@@ -1679,7 +1746,7 @@ class AppController {
             return;
         }
 
-        const motorId = state.addMotor(progId, type, reg, custodian);
+        const motorId = state.addMotor(progId, type, reg, custodian, make, remarks);
         
         // Seed default initial location & service for the motor
         const recordDate = new Date().toISOString().split("T")[0];
