@@ -1,13 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="theme-color" content="#0F5132" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="manifest" href="manifest.json" />
+    <meta name="description" content="National Crops Resources Research Institute (NaCRRI) Fleet Management System. Official register for vehicles, motorcycles, tractors, vans, and buses." />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    <meta http-equiv="Content-Language" content="en" />
+    
+    <!-- Favicon Icons -->
+    <link rel="icon" type="image/svg+xml" href="logo.svg" />
+    <link rel="icon" type="image/png" href="logo.png" />
     <link rel="apple-touch-icon" href="logo.png" />
+    <link rel="manifest" href="manifest.json" />
+
     <title>NaCRRI Fleet Management System</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,37 +28,62 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Skip to main content accessibility link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Scroll Progress Indicator -->
+    <div id="scroll-progress-bar" class="scroll-progress-bar" aria-hidden="true"></div>
+
     <div id="app-container">
         
+        <!-- Top Institutional Notice Banner -->
+        <div id="system-status-banner" class="system-status-banner">
+            <span class="banner-badge">OFFICIAL PORTAL</span>
+            <span class="banner-text">National Crops Resources Research Institute Fleet Register and Governance Operations</span>
+        </div>
+
         <!-- ========================================================= -->
         <!-- 1. LOGIN / QUICK ACCESS SCREEN                           -->
         <!-- ========================================================= -->
         <div id="view-login" class="login-view-wrapper">
             <div class="login-card">
-                <div class="logo-container">
-                    <img src="logo.png" alt="NaCRRI Logo" class="nacrri-logo-img" width="130" height="130" />
+                <div class="logo-container" onclick="app.navigateTo('login')" title="NaCRRI Home" style="cursor: pointer;">
+                    <img src="logo.png" alt="NaCRRI Logo" class="nacrri-logo-img" width="120" height="120" />
                 </div>
                 <h1>NaCRRI FLEET</h1>
                 <p class="subtitle">National Crops Resources Research Institute</p>
-                <p class="desc">Fleet Management & Register System</p>
+                <p class="desc">Fleet Management & Register Portal</p>
                 
+                <div id="login-error-msg" class="login-error-banner hidden" role="alert"></div>
+
                 <form id="login-form">
+                    <input type="hidden" id="login-csrf-token" name="csrf_token" value="" />
+
                     <div class="form-group">
-                        <label for="login-name">Your Name</label>
-                        <input type="text" id="login-name" placeholder="Enter full name" required value="PHRAO Officer" />
+                        <label for="login-name">Official Name *</label>
+                        <input type="text" id="login-name" placeholder="Enter full name" required value="PHRAO Officer" autocomplete="name" />
                     </div>
                     
                     <div class="form-group">
-                        <label for="login-role">System Role</label>
-                        <select id="login-role" required onchange="const p = document.getElementById('group-login-prog'); if(this.value === 'Programme Admin'){ p.style.display='block'; }else{ p.style.display='none'; }">
+                        <label for="login-role">System Role *</label>
+                        <select id="login-role" required onchange="app.handleRoleChange(this.value)">
                             <option value="Super Admin">Super Admin (PHRAO)</option>
                             <option value="Programme Admin">Programme Admin (Admin Assistant)</option>
-                            <option value="Management Viewer">Management Viewer (Reader)</option>
+                            <option value="Management Viewer">Management Viewer (Read Only)</option>
                         </select>
+                    </div>
+
+                    <div id="group-login-pin" class="form-group">
+                        <label for="login-pin">Access PIN / Password *</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="login-pin" placeholder="Enter security PIN" required value="phrao2026" autocomplete="current-password" />
+                            <button type="button" class="pin-toggle-btn" onclick="app.togglePasswordVisibility('login-pin')" title="Toggle Password Visibility">Show</button>
+                        </div>
+                        <span class="form-hint-info">Default PINs: Super Admin (phrao2026), Prog Admin (prog2026), Viewer (view2026)</span>
                     </div>
                     
                     <div id="group-login-prog" class="form-group" style="display: none;">
-                        <label for="login-programme">Your Assigned Programme</label>
+                        <label for="login-programme">Assigned Programme *</label>
                         <select id="login-programme">
                             <option value="admin">Administration</option>
                             <option value="horticulture">Horticulture and Oil palm</option>
@@ -56,8 +94,13 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn btn-primary btn-block">Access System &rarr;</button>
+                    <button type="submit" id="btn-login-submit" class="btn btn-primary btn-block">Authenticate & Access System &rarr;</button>
                 </form>
+
+                <div class="login-footer-links">
+                    <a href="#" onclick="app.navigateTo('privacy'); return false;">Privacy Policy</a> | 
+                    <a href="#" onclick="app.navigateTo('terms'); return false;">Terms & Conditions</a>
+                </div>
             </div>
         </div>
 
@@ -68,16 +111,38 @@
             
             <!-- TOP HEADER -->
             <header class="app-header">
-                <div class="header-logo-section" data-view="overview">
-                    <div class="header-logo-box">
-                        <img src="logo.png" alt="NaCRRI Logo" class="header-logo-img" width="40" height="40" />
-                    </div>
-                    <div class="header-titles">
-                        <h2>NaCRRI Fleet</h2>
-                        <span>National Crops Resources Research Institute</span>
+                <div class="header-left">
+                    <button id="mobile-menu-toggle" class="mobile-menu-btn" onclick="app.toggleMobileSidebar()" aria-label="Toggle Navigation Menu">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                    <div class="header-logo-section" onclick="app.navigateTo('overview')" title="Go to Overview" style="cursor: pointer;">
+                        <div class="header-logo-box">
+                            <img src="logo.png" alt="NaCRRI Logo" class="header-logo-img" width="38" height="38" />
+                        </div>
+                        <div class="header-titles">
+                            <h2>NaCRRI Fleet</h2>
+                            <span>National Crops Resources Research Institute</span>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Global Full Site Search Bar -->
+                <div class="header-search-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="global-site-search" placeholder="Search vehicles, registration, custodian, location..." oninput="app.handleGlobalSearch(this.value)" autocomplete="off" />
+                        <button type="button" class="search-clear-btn hidden" id="search-clear-btn" onclick="app.clearGlobalSearch()">Cancel</button>
+                    </div>
+                    <div id="global-search-results" class="global-search-dropdown hidden"></div>
+                </div>
+
                 <div class="header-user-section">
+                    <!-- Dark Mode Toggle Button -->
+                    <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" onclick="app.toggleTheme()" title="Toggle Dark / Light Mode" aria-label="Toggle Dark Mode">
+                        <span id="theme-toggle-label">Dark Mode</span>
+                    </button>
+
                     <div class="user-meta-info">
                         <span class="user-name-label current-user-name">PHRAO Admin</span>
                         <div class="user-role-container">
@@ -85,7 +150,7 @@
                             <span class="user-prog-indicator current-user-programme">Administration</span>
                         </div>
                     </div>
-                    <button class="logout-btn" onclick="app.logout();">&larr; Exit</button>
+                    <button class="logout-btn" onclick="app.confirmLogout();">&larr; Exit</button>
                 </div>
             </header>
 
@@ -93,75 +158,94 @@
             <div class="app-body-container">
                 
                 <!-- LEFT SIDEBAR NAVIGATION -->
-                <aside class="app-sidebar">
+                <aside id="app-sidebar" class="app-sidebar">
                     <nav class="sidebar-nav">
                         <ul>
                             <li>
-                                <a href="#" data-view="overview">
-                                    <span class="nav-icon">📊</span>
+                                <a href="#" data-view="overview" onclick="app.navigateTo('overview'); return false;">
+                                    <span class="nav-tag-icon">REG</span>
                                     <span>Programmes Overview</span>
                                 </a>
                             </li>
-                            <li class="nav-header">Programmes</li>
+                            <li class="nav-header">Research Scope</li>
                             <li>
-                                <a href="#" data-view="workspace" data-programme-id="admin">
+                                <a href="#" data-view="workspace" data-programme-id="admin" onclick="app.openProgrammeWorkspace('admin'); return false;">
                                     <span class="nav-indicator-dot admin"></span>
                                     <span>Administration</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-view="workspace" data-programme-id="horticulture">
+                                <a href="#" data-view="workspace" data-programme-id="horticulture" onclick="app.openProgrammeWorkspace('horticulture'); return false;">
                                     <span class="nav-indicator-dot horticulture"></span>
                                     <span>Horticulture & Oil palm</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-view="workspace" data-programme-id="legumes">
+                                <a href="#" data-view="workspace" data-programme-id="legumes" onclick="app.openProgrammeWorkspace('legumes'); return false;">
                                     <span class="nav-indicator-dot legumes"></span>
                                     <span>Legumes</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-view="workspace" data-programme-id="root_crops">
+                                <a href="#" data-view="workspace" data-programme-id="root_crops" onclick="app.openProgrammeWorkspace('root_crops'); return false;">
                                     <span class="nav-indicator-dot root_crops"></span>
                                     <span>Root Crops</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-view="workspace" data-programme-id="cereals">
+                                <a href="#" data-view="workspace" data-programme-id="cereals" onclick="app.openProgrammeWorkspace('cereals'); return false;">
                                     <span class="nav-indicator-dot cereals"></span>
                                     <span>Cereals</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-view="workspace" data-programme-id="workshop">
+                                <a href="#" data-view="workspace" data-programme-id="workshop" onclick="app.openProgrammeWorkspace('workshop'); return false;">
                                     <span class="nav-indicator-dot workshop"></span>
                                     <span>Workshop</span>
                                 </a>
                             </li>
-                            <li class="nav-header">Analytics & Operations</li>
+                            <li class="nav-header">Analytics & System</li>
                             <li>
-                                <a href="#" data-view="reports">
-                                    <span class="nav-icon">📋</span>
+                                <a href="#" data-view="reports" onclick="app.navigateTo('reports'); return false;">
+                                    <span class="nav-tag-icon">REP</span>
                                     <span>Reports & Export</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" data-view="settings">
-                                    <span class="nav-icon">⚙️</span>
+                                <a href="#" data-view="settings" onclick="app.navigateTo('settings'); return false;">
+                                    <span class="nav-tag-icon">CFG</span>
                                     <span>Settings Manager</span>
+                                </a>
+                            </li>
+                            <li class="nav-header">Institutional Info</li>
+                            <li>
+                                <a href="#" data-view="faq" onclick="app.navigateTo('faq'); return false;">
+                                    <span class="nav-tag-icon">FAQ</span>
+                                    <span>Help & Operational FAQ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="privacy" onclick="app.navigateTo('privacy'); return false;">
+                                    <span class="nav-tag-icon">PRV</span>
+                                    <span>Privacy Policy</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-view="terms" onclick="app.navigateTo('terms'); return false;">
+                                    <span class="nav-tag-icon">TRM</span>
+                                    <span>Terms & Conditions</span>
                                 </a>
                             </li>
                         </ul>
                     </nav>
                     <div class="sidebar-footer">
-                        <div class="footer-powered">NaCRRI Fleet v1.0.0</div>
-                        <div class="footer-date">August 2026</div>
+                        <div class="footer-powered">NaCRRI Fleet System v1.1.0</div>
+                        <div class="footer-date">National Crops Institute</div>
                     </div>
                 </aside>
 
                 <!-- CENTER MAIN CONTENT WINDOW -->
-                <main class="app-main-content">
+                <main id="main-content" class="app-main-content">
 
                     <!-- ========================================================= -->
                     <!-- 2. PROGRAMME OVERVIEW (6 Programme Cards Grid)           -->
@@ -173,7 +257,7 @@
                                     <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
                                     <h1>Institute Programmes Overview</h1>
                                 </div>
-                                <p>Cumulative counts and live indicators across all research programmes.</p>
+                                <p>Cumulative motor counts and live operational indicators across all research programmes.</p>
                             </div>
                         </div>
                         
@@ -192,11 +276,11 @@
                                 <h1 id="workspace-header-title">Cereals Workspace</h1>
                             </div>
                             <div class="workspace-tabs">
-                                <a href="#" data-tab="dashboard" class="active">Dashboard</a>
-                                <a href="#" data-tab="register">Motor Register</a>
-                                <a href="#" data-tab="service">Service Tracker</a>
-                                <a href="#" data-tab="location">Location & Stay</a>
-                                <a href="#" data-tab="entry-form" id="tab-entry-form">Status / Location Entry</a>
+                                <a href="#" data-tab="dashboard" class="active" onclick="app.switchWorkspaceTab('dashboard'); return false;">Dashboard</a>
+                                <a href="#" data-tab="register" onclick="app.switchWorkspaceTab('register'); return false;">Motor Register</a>
+                                <a href="#" data-tab="service" onclick="app.switchWorkspaceTab('service'); return false;">Service Tracker</a>
+                                <a href="#" data-tab="location" onclick="app.switchWorkspaceTab('location'); return false;">Location & Stay</a>
+                                <a href="#" data-tab="entry-form" id="tab-entry-form" onclick="app.switchWorkspaceTab('entry-form'); return false;">Status / Location Entry</a>
                             </div>
                         </div>
 
@@ -269,9 +353,9 @@
                                             <div><span class="dot serviced"></span> Serviced Badges</div>
                                             <div><span class="dot pending"></span> Pending Badges</div>
                                             <div><span class="dot overdue"></span> Overdue Badges</div>
-                                            <div><span class="dot-cat field"></span> Field category (blue)</div>
-                                            <div><span class="dot-cat onstation"></span> On station (purple)</div>
-                                            <div><span class="dot-cat offstation"></span> Off station (grey)</div>
+                                            <div><span class="dot-cat field"></span> Field category</div>
+                                            <div><span class="dot-cat onstation"></span> On station</div>
+                                            <div><span class="dot-cat offstation"></span> Off station</div>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +366,7 @@
                         <div id="workspace-register" class="tab-content hidden">
                             <div class="table-actions-header">
                                 <div class="search-filters-group">
-                                    <input type="text" id="reg-search" placeholder="Search registration, responsible custodian..." oninput="app.renderWorkspaceRegister()" />
+                                    <input type="text" id="reg-search" placeholder="Search registration, custodian..." oninput="app.renderWorkspaceRegister()" />
                                     <select id="reg-filter-type" onchange="app.renderWorkspaceRegister()">
                                         <option value="">All Motor Types</option>
                                         <option value="Vehicle">Vehicles</option>
@@ -380,7 +464,9 @@
                                 <h2>Status & Location Entry Form</h2>
                                 <p class="form-instructions">All fields marked with an asterisk (*) are required. Fields dynamically show/hide based on the service status selected.</p>
                                 
-                                <form id="motor-entry-form">
+                                <form id="motor-entry-form" onsubmit="app.handleMotorEntrySubmit(event)">
+                                    <input type="hidden" id="form-csrf-token" name="csrf_token" value="" />
+                                    
                                     <div class="form-grid-columns">
                                         <!-- Left Column: Core Identity -->
                                         <div class="form-column">
@@ -413,7 +499,6 @@
                                                 <label for="form-registration">Registration Number *</label>
                                                 <select id="form-registration" required>
                                                     <option value="">-- Select Registration --</option>
-                                                    <!-- Filtered by program + type -->
                                                 </select>
                                             </div>
 
@@ -421,7 +506,6 @@
                                                 <label for="form-responsible-person">Custodian / Responsible Person *</label>
                                                 <select id="form-responsible-person" required>
                                                     <option value="">-- Select Responsible Person --</option>
-                                                    <!-- Filtered by program -->
                                                 </select>
                                             </div>
 
@@ -474,7 +558,7 @@
                                                 <label for="form-odometer">Odometer Reading (km) *</label>
                                                 <input type="number" id="form-odometer" placeholder="e.g. 104500" min="0" oninput="app.validateForm()" />
                                                 <span class="validation-msg">Please enter a valid odometer number.</span>
-                                                <div class="form-hint-info">Next service will be calculated automatically (+5,000 km)</div>
+                                                <div class="form-hint-info">Next service calculated (+5,000 km)</div>
                                             </div>
 
                                             <div id="group-service-station" class="form-group hidden">
@@ -519,12 +603,12 @@
                                                 <div class="form-group">
                                                     <label for="form-start-date">Start Date</label>
                                                     <input type="date" id="form-start-date" onchange="app.calculatePeriodOfStay()" />
-                                                    <span class="validation-msg">Start Date is required for Field deployments.</span>
+                                                    <span class="validation-msg">Start Date required for Field deployments.</span>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="form-end-date">Expected End Date</label>
                                                     <input type="date" id="form-end-date" onchange="app.calculatePeriodOfStay()" />
-                                                    <span class="validation-msg">End Date is required and must not be before Start Date.</span>
+                                                    <span class="validation-msg">End Date required and must be after Start Date.</span>
                                                 </div>
                                             </div>
 
@@ -649,7 +733,7 @@
                             <!-- Column 3: Locations Categories -->
                             <div class="settings-card full-width">
                                 <h3>Deployment Locations Registry</h3>
-                                <p class="setting-hint">Format: <strong>Location Name | Category</strong> (Category must be either: <em>Field</em>, <em>On station</em>, or <em>Off station</em>)</p>
+                                <p class="setting-hint">Format: <strong>Location Name | Category</strong> (Category: <em>Field</em>, <em>On station</em>, or <em>Off station</em>)</p>
                                 <div class="form-group">
                                     <label for="set-locations">Registered Locations & Categories</label>
                                     <textarea id="set-locations" rows="8"></textarea>
@@ -658,30 +742,176 @@
                         </div>
 
                         <div class="settings-action-row">
-                            <button class="btn btn-secondary" onclick="if(confirm('Are you sure you want to reset all mock databases and preferences to system defaults?')){ state.resetToDefaults(); }">Reset Database Defaults</button>
+                            <button class="btn btn-secondary" onclick="app.confirmResetDatabase()">Reset Database Defaults</button>
                             <button class="btn btn-primary" onclick="app.saveSettings()">Save Configuration Lists</button>
                         </div>
                     </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 12. OPERATIONAL FAQ SECTION                              -->
+                    <!-- ========================================================= -->
+                    <section id="view-faq" class="view-section hidden">
+                        <div class="view-header">
+                            <div class="header-main">
+                                <div class="header-title-flex">
+                                    <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                    <h1>Institutional Fleet Operational FAQ</h1>
+                                </div>
+                                <p>Standard operating procedures, governance guidelines, and register management questions.</p>
+                            </div>
+                        </div>
+
+                        <div class="faq-container-card">
+                            <div class="faq-accordion">
+                                <div class="faq-item">
+                                    <button class="faq-question" onclick="app.toggleFAQ(this)">
+                                        <span>How is the Period of Stay calculated for field locations?</span>
+                                        <span class="faq-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Period of stay is automatically computed in days as the inclusive difference between the assigned Start Date and Expected End Date for any motor assigned to Field category.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-item">
+                                    <button class="faq-question" onclick="app.toggleFAQ(this)">
+                                        <span>What permissions do Programme Admins have?</span>
+                                        <span class="faq-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Programme Admins can view registers, log service statuses, and record location movements strictly within their assigned research programme. System settings and cross-programme administrative actions require Super Admin (PHRAO) authorization.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-item">
+                                    <button class="faq-question" onclick="app.toggleFAQ(this)">
+                                        <span>When should a motor service status be marked as Overdue?</span>
+                                        <span class="faq-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>A motor status must be recorded as Overdue whenever a scheduled service interval or odometer limit (+5,000 km) has passed without completed maintenance inspection.</p>
+                                    </div>
+                                </div>
+
+                                <div class="faq-item">
+                                    <button class="faq-question" onclick="app.toggleFAQ(this)">
+                                        <span>How do I export fleet reports to CSV format?</span>
+                                        <span class="faq-icon">+</span>
+                                    </button>
+                                    <div class="faq-answer">
+                                        <p>Navigate to the Reports & Export tab, select your query parameters and programme context, then click Export Table to CSV to generate an official institutional spreadsheet.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 13. PRIVACY POLICY PAGE                                   -->
+                    <!-- ========================================================= -->
+                    <section id="view-privacy" class="view-section hidden">
+                        <div class="view-header">
+                            <div class="header-main">
+                                <div class="header-title-flex">
+                                    <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                    <h1>NaCRRI Institutional Privacy Policy</h1>
+                                </div>
+                                <p>Information Governance and Motor Register Data Protection Standards</p>
+                            </div>
+                        </div>
+
+                        <div class="document-container-card">
+                            <h3>1. Asset Data Governance</h3>
+                            <p>The NaCRRI Fleet Management System records motor asset details, location movements, custodianship assignments, and service history strictly for institutional oversight at Namulonge and partner stations.</p>
+                            
+                            <h3>2. Custodian & User Records</h3>
+                            <p>Custodian names, contact references, and administrative log entries are stored securely in internal system state. Personal data is never shared externally or processed for non-institutional purposes.</p>
+
+                            <h3>3. Audit Trail & Data Retention</h3>
+                            <p>All service logs and location updates maintain explicit timestamped records. Data retention complies with National Agricultural Research Organisation (NARO) asset management standards.</p>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 14. TERMS AND CONDITIONS PAGE                             -->
+                    <!-- ========================================================= -->
+                    <section id="view-terms" class="view-section hidden">
+                        <div class="view-header">
+                            <div class="header-main">
+                                <div class="header-title-flex">
+                                    <button class="btn-back" onclick="app.goBack()">&larr; Back</button>
+                                    <h1>Institutional Terms & Conditions</h1>
+                                </div>
+                                <p>Vehicle Usage Protocol and Institutional Asset Governance Rules</p>
+                            </div>
+                        </div>
+
+                        <div class="document-container-card">
+                            <h3>1. Motor Operation & Custody</h3>
+                            <p>All vehicles, motorcycles, tractors, vans, and buses registered under NaCRRI must be operated exclusively by authorized custodians with valid log entries and approved deployment dates.</p>
+
+                            <h3>2. Mandatory Service Logging</h3>
+                            <p>Designated custodians and workshop personnel are obligated to log odometer readings, maintenance completions, or pending service reasons immediately upon status changes.</p>
+
+                            <h3>3. Authorized Access Control</h3>
+                            <p>System roles (Super Admin, Programme Admin, Management Viewer) must strictly adhere to assigned administrative scopes. Unauthorized modification of vehicle logs is prohibited.</p>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================= -->
+                    <!-- 15. CUSTOM 404 ERROR PAGE                                 -->
+                    <!-- ========================================================= -->
+                    <section id="view-404" class="view-section hidden">
+                        <div class="error-404-wrapper">
+                            <div class="error-404-card">
+                                <h1>404</h1>
+                                <h2>Page or View Not Found</h2>
+                                <p>The requested view or system module does not exist or has been relocated.</p>
+                                <button class="btn btn-primary" onclick="app.navigateTo('overview')">Return to Fleet Overview</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- INSTITUTIONAL FOOTER -->
+                    <footer class="app-footer">
+                        <div class="footer-content">
+                            <div class="footer-left">
+                                <h4>National Crops Resources Research Institute (NaCRRI)</h4>
+                                <p>Namulonge, P.O. Box 7084, Kampala, Uganda</p>
+                                <p>Phone: <a href="tel:+256414570600">+256 414 570 600</a> | Email: <a href="mailto:info@nacrri.go.ug">info@nacrri.go.ug</a></p>
+                            </div>
+                            <div class="footer-right">
+                                <div class="footer-nav-links">
+                                    <a href="#" onclick="app.navigateTo('overview'); return false;">Overview</a>
+                                    <a href="#" onclick="app.navigateTo('reports'); return false;">Reports</a>
+                                    <a href="#" onclick="app.navigateTo('faq'); return false;">FAQ</a>
+                                    <a href="#" onclick="app.navigateTo('privacy'); return false;">Privacy Policy</a>
+                                    <a href="#" onclick="app.navigateTo('terms'); return false;">Terms & Conditions</a>
+                                </div>
+                                <p class="copyright-text">&copy; <span id="copyright-year">2026</span> NaCRRI Fleet Management System. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </footer>
 
                 </main>
 
                 <!-- MOBILE BOTTOM NAVIGATION BAR -->
                 <nav class="mobile-bottom-nav">
-                    <a href="#" data-view="overview" class="mobile-nav-item">
+                    <a href="#" data-view="overview" class="mobile-nav-item" onclick="app.navigateTo('overview'); return false;">
                         <img src="icons/icon_vehicle.png" class="mobile-nav-icon-img" alt="Overview" />
                         <span class="nav-label">Overview</span>
                     </a>
-                    <a href="#" data-view="workspace" class="mobile-nav-item">
+                    <a href="#" data-view="workspace" class="mobile-nav-item" onclick="app.navigateTo('workspace'); return false;">
                         <img src="icons/icon_tractor.png" class="mobile-nav-icon-img" alt="Workspace" />
                         <span class="nav-label">Workspace</span>
                     </a>
-                    <a href="#" data-view="reports" class="mobile-nav-item">
+                    <a href="#" data-view="reports" class="mobile-nav-item" onclick="app.navigateTo('reports'); return false;">
                         <img src="icons/icon_van.png" class="mobile-nav-icon-img" alt="Reports" />
                         <span class="nav-label">Reports</span>
                     </a>
-                    <a href="#" onclick="app.logout(); return false;" class="mobile-nav-item">
+                    <a href="#" onclick="app.confirmLogout(); return false;" class="mobile-nav-item">
                         <img src="icons/icon_bus.png" class="mobile-nav-icon-img" alt="Logout" />
-                        <span class="nav-label">Logout</span>
+                        <span class="nav-label">Exit</span>
                     </a>
                 </nav>
             </div>
@@ -690,12 +920,111 @@
         <!-- ========================================================= -->
         <!-- 9. MOTOR DETAILS VIEW (Right Sliding Panel / Drawer)      -->
         <!-- ========================================================= -->
-        <div id="details-drawer" class="details-drawer-wrapper">
-            <button id="close-drawer" class="close-drawer-btn" aria-label="Close panel">&times;</button>
+        <div id="details-drawer" class="details-drawer-wrapper" role="dialog" aria-modal="true" aria-label="Motor Details Panel">
+            <button id="close-drawer" class="close-drawer-btn" onclick="app.closeMotorDetails()" aria-label="Close panel">&times;</button>
             <div id="drawer-content" class="drawer-scroll-container">
                 <!-- Dynamically populated drawer details by app.js -->
             </div>
         </div>
+
+        <!-- ========================================================= -->
+        <!-- REGISTER NEW MOTOR MODAL                                  -->
+        <!-- ========================================================= -->
+        <div id="motor-modal" class="modal-wrapper hidden" role="dialog" aria-modal="true">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h2 id="modal-title">Register New Motor</h2>
+                    <button class="modal-close-btn" onclick="app.closeMotorModal()">&times;</button>
+                </div>
+                <form id="add-motor-form" onsubmit="app.handleSaveNewMotor(event)">
+                    <div class="form-group">
+                        <label for="modal-programme">Programme *</label>
+                        <select id="modal-programme" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-motor-type">Motor Type *</label>
+                        <select id="modal-motor-type" required>
+                            <option value="Vehicle">Vehicle</option>
+                            <option value="Motorcycle">Motorcycle</option>
+                            <option value="Tractor">Tractor</option>
+                            <option value="Van">Van</option>
+                            <option value="Bus">Bus</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-registration">Registration Number *</label>
+                        <input type="text" id="modal-registration" placeholder="e.g. UG-101-ABC or UBJ 186V" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-make">Make / Model *</label>
+                        <input type="text" id="modal-make" placeholder="e.g. Toyota Hilux Double Cabin" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-custodian">Responsible Person / Custodian *</label>
+                        <input type="text" id="modal-custodian" placeholder="e.g. John M." required />
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-remarks">Remarks</label>
+                        <textarea id="modal-remarks" rows="3" placeholder="Condition details or notes"></textarea>
+                    </div>
+                    <div class="modal-footer-actions">
+                        <button type="button" class="btn btn-secondary" onclick="app.closeMotorModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Motor Record</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- CONFIRMATION MODAL -->
+        <div id="confirmation-modal" class="modal-wrapper hidden" role="dialog" aria-modal="true">
+            <div class="modal-card modal-card-sm">
+                <div class="modal-header">
+                    <h3 id="confirm-modal-title">Confirm Action</h3>
+                    <button class="modal-close-btn" onclick="app.closeConfirmationModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="confirm-modal-body">
+                    Are you sure you want to proceed?
+                </div>
+                <div class="modal-footer-actions">
+                    <button type="button" class="btn btn-secondary" onclick="app.closeConfirmationModal()">Cancel</button>
+                    <button type="button" id="btn-confirm-action" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLOATING CONTACT SUPPORT BUTTON & MODAL -->
+        <button id="floating-contact-btn" class="floating-contact-btn" onclick="app.toggleContactModal()" title="Contact Fleet Support">
+            <span class="contact-btn-text">Support</span>
+        </button>
+
+        <div id="contact-modal" class="modal-wrapper hidden" role="dialog" aria-modal="true">
+            <div class="modal-card modal-card-sm">
+                <div class="modal-header">
+                    <h3>NaCRRI Fleet Support Desk</h3>
+                    <button class="modal-close-btn" onclick="app.toggleContactModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>For urgent transport allocation, emergency maintenance authorization, or technical assistance:</p>
+                    <div class="contact-methods-list">
+                        <div class="contact-item">
+                            <strong>Official Telephone:</strong> <a href="tel:+256414570600">+256 414 570 600</a>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Fleet Admin Email:</strong> <a href="mailto:info@nacrri.go.ug">info@nacrri.go.ug</a>
+                        </div>
+                        <div class="contact-item">
+                            <strong>Headquarters Office:</strong> PHRAO Office, Administration Block, Namulonge Station.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLOATING SCROLL TO TOP BUTTON -->
+        <button id="scroll-to-top-btn" class="scroll-to-top-btn hidden" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Scroll to Top" aria-label="Scroll to top">&uarr;</button>
+
+        <!-- TOAST NOTIFICATION CONTAINER -->
+        <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
     </div>
 
@@ -703,3 +1032,4 @@
     <script src="app.js"></script>
 </body>
 </html>
+
