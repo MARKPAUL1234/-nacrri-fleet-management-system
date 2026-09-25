@@ -573,6 +573,11 @@ h1, h2, h3, h4, h5, h6 {
     min-height: calc(100vh - 64px);
 }
 
+.app-main-content {
+    padding: 24px;
+    overflow-y: auto;
+}
+
 /* Sidebar */
 .app-sidebar {
     background: var(--card-bg);
@@ -581,6 +586,10 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: auto;
+    max-height: calc(100vh - 64px);
+    position: sticky;
+    top: 64px;
 }
 
 .sidebar-nav ul {
@@ -638,10 +647,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tab-content {
-    touch-action: pan-y;
+    touch-action: auto;
     width: 100%;
     position: relative;
-    will-change: transform, opacity;
 }
 
 .view-section {
@@ -1143,8 +1151,11 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #ffffff;
     border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
     border: 1px solid var(--border-light);
-    overflow-x: auto;
-    max-height: 500px;
+    overflow: auto;
+    max-height: calc(100vh - 270px);
+    min-height: 280px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
 
 .nacrri-data-table {
@@ -1162,7 +1173,8 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 2px solid var(--border-light);
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .nacrri-data-table td {
@@ -1494,6 +1506,9 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
     border: 1px solid var(--border-light);
     padding: 20px;
     box-shadow: var(--card-shadow);
+    overflow: auto;
+    max-height: calc(100vh - 280px);
+    -webkit-overflow-scrolling: touch;
 }
 
 .report-preview-container h3 {
@@ -1734,8 +1749,11 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
     background-color: #ffffff;
     border-radius: var(--border-radius-md);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    max-width: 480px;
-    width: 100%;
+    max-width: 520px;
+    width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
     border: 1px solid var(--accent-mint);
     overflow: hidden;
 }
@@ -1747,6 +1765,7 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .modal-header h2 {
@@ -1770,6 +1789,9 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
 
 .modal-card form {
     padding: 20px;
+    overflow-y: auto;
+    max-height: calc(90vh - 65px);
+    -webkit-overflow-scrolling: touch;
 }
 
 .modal-actions {
@@ -1947,8 +1969,10 @@ select:invalid:not(:placeholder-shown) ~ .validation-msg {
     }
 
     .table-responsive {
-        overflow-x: auto;
+        overflow: auto;
+        max-height: calc(100vh - 220px);
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
         border-radius: var(--border-radius-md);
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
