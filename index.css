@@ -276,6 +276,22 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
+.login-theme-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--primary-green);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0 4px;
+    text-decoration: underline;
+}
+
+.login-theme-toggle-btn:hover {
+    color: var(--secondary-green);
+}
+
 /* Form Groups & Inputs */
 .form-group {
     margin-bottom: 16px;

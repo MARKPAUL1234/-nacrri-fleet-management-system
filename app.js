@@ -402,6 +402,10 @@ class AppController {
         if (label) {
             label.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
         }
+        const loginLabel = document.getElementById("login-theme-label");
+        if (loginLabel) {
+            loginLabel.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
+        }
     }
 
     setupEventListeners() {
@@ -453,9 +457,9 @@ class AppController {
         }
     }
 
-    togglePasswordVisibility(inputId) {
+    togglePasswordVisibility(inputId, btnEl = null) {
         const input = document.getElementById(inputId);
-        const btn = event.target;
+        const btn = btnEl || (typeof event !== "undefined" ? event.target : null);
         if (input) {
             if (input.type === "password") {
                 input.type = "text";
